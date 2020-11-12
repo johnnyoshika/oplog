@@ -1,9 +1,20 @@
 import http = require('http');
-import './op';
+import './oplog';
 
 const port = process.env.port || 1337
 
-http.createServer(function (req, res) {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function greeter() {
+    await sleep(2000); 
+    return 'Hello World\n';
+}
+
+http.createServer(async function main(req, res) {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello World\n');
-}.logTo(console)).listen(port);
+    res.end(await greeter.loggable()());
+}.loggable().logTo(console))
+.listen(port);
+

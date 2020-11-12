@@ -37,7 +37,7 @@
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="op.ts">
+    <TypeScriptCompile Include="oplog.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>
