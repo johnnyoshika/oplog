@@ -4,7 +4,15 @@ declare global {
     interface Function {
         logTo(console: Console): any;
         loggable(text?: string): any;
-    }
+    }    
+}
+
+export function loggable(target, name, descriptor) {
+    const original = descriptor.value;
+    if (typeof original === 'function')
+        descriptor.value = original.loggable();
+
+    return descriptor;
 }
 
 function timer() {
@@ -60,7 +68,7 @@ Function.prototype.loggable = function (text?: string): any {
 
         try
         {
-            const result = this.apply(this, args);
+            const result = that.apply(that, args);
             Promise.resolve(result)
                 .then(() => insert())
                 .catch(ex => insert(ex));
@@ -74,4 +82,4 @@ Function.prototype.loggable = function (text?: string): any {
     }
 };
 
-export {};
+export { };

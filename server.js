@@ -10,22 +10,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const http = require("http");
+const Greeter_1 = require("./Greeter");
 require("./oplog");
 const port = process.env.port || 1337;
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-function greeter() {
+function handler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield sleep(2000);
-        return 'Hello World\n';
-    });
-}
-http.createServer(function main(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
+        const greeter = new Greeter_1.Greeter();
         res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(yield greeter.loggable()());
+        res.end(yield greeter.greet());
     });
-}.loggable().logTo(console))
+}
+http.createServer(handler
+    .loggable()
+    .logTo(console))
     .listen(port);
 //# sourceMappingURL=server.js.map

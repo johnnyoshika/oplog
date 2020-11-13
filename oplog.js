@@ -9,7 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.loggable = void 0;
 const { AsyncLocalStorage } = require('async_hooks');
+function loggable(target, name, descriptor) {
+    const original = descriptor.value;
+    if (typeof original === 'function')
+        descriptor.value = original.loggable();
+    return descriptor;
+}
+exports.loggable = loggable;
 function timer() {
     const start = new Date().getTime();
     return {
@@ -52,7 +60,7 @@ Function.prototype.loggable = function (text) {
             log.lines.splice(0, 0, "    ".repeat(--log.indent) + (text !== null && text !== void 0 ? text : that.name) + ` in ${time.ms} ms. ${ex !== null && ex !== void 0 ? ex : ""}`);
         }
         try {
-            const result = this.apply(this, args);
+            const result = that.apply(that, args);
             Promise.resolve(result)
                 .then(() => insert())
                 .catch(ex => insert(ex));
